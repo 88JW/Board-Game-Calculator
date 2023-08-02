@@ -47,19 +47,38 @@ export default class Kalkulator extends Component {
     console.log(wynik);
   };
 
+
+  handleClick = (e) => {
+    const button = e.target;
+    const div = document.querySelector(".Kalkulator__conteiner");
+    if (button.className === "removePlayer") {
+      div.style.display = "none";
+    } else if (button.className === "addPlayer") {
+      div.style.display = "block";
+    } 
+  };
+
   render() {
     return (
       <div className="Elements__conteiner">
+        <div className="opis">
+          <h1>Kalkulator gry: "Na Skrzydłach"</h1>
+          <div className="opis">
+            <p>
+              Wprowadź do rubryk poszczególne wartości każdego gracza i kliknij
+              oblicz wynik
+            </p>
+          </div>
+        </div>
+        <button className="addPlayer" onClick={this.handleClick}>
+          {" "}
+          Dodaj gracza{" "}
+        </button>
+        <button className="removePlayer" onClick={this.handleClick}>
+          {" "}
+          Ukryj{" "}
+        </button>
         <div className="Kalkulator__conteiner">
-          <Container>
-            <h1>Kalkulator gry: "Na Skrzydłach"</h1>
-            <div className="opis">
-              <p>
-                Wprowadź do rubryk poszczególne wartości każdego gracza i
-                kliknij oblicz wynik
-              </p>
-            </div>
-          </Container>
           <Container fluid>
             <form onSubmit={this.handleSubmmit}>
               <Row className="row__one">
