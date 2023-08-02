@@ -47,7 +47,6 @@ export default class Kalkulator extends Component {
     console.log(wynik);
   };
 
-
   handleClick = (e) => {
     const button = e.target;
     const div = document.querySelector(".Kalkulator__conteiner");
@@ -55,7 +54,7 @@ export default class Kalkulator extends Component {
       div.style.display = "none";
     } else if (button.className === "addPlayer") {
       div.style.display = "block";
-    } 
+    }
   };
 
   render() {
