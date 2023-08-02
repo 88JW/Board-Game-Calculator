@@ -15,8 +15,7 @@ export default class Kalkulator extends Component {
   handleChange = (e) => {
     const name = e.target.name;
     const type = e.target.type;
-    const checked = e.target.checked;
-
+   
     if (type === "number") {
       const value = e.target.value;
       this.setState({
@@ -47,12 +46,13 @@ export default class Kalkulator extends Component {
     document.getElementById("sumResult").textContent = `Suma: ${wynik}`;
     console.log(wynik);
   };
-
+  
   render() {
     return (
       <div className="Elements__conteiner">
         <div className="Kalkulator__conteiner">
           <Container>
+            {/* Q: jak wstawić akapit?   */}
             <h1>Kalkulator gry: "Na Skrzydłach"</h1>
             <div className="opis">
               <p>
@@ -181,7 +181,7 @@ export default class Kalkulator extends Component {
               <br />
               <button className="myButton" onClick={this.handleClick}>
                 Oblicz kto wygrał
-              </button>
+              </button>           
             </form>
           </Container>
           <Container>
