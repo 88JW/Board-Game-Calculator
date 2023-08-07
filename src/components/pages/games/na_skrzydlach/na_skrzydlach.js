@@ -3,61 +3,79 @@ import { Container, Row, Col } from "react-bootstrap";
 
 export default class Kalkulator extends Component {
   state = {
-    ptakiWartosc: 0,
-    kartyBonusoweWartosc: 0,
-    celeWartosc: 0,
-    jajkaWartosc: 0,
-    pozywienieNaKartachWartosc: 0,
-    kartaPodKartaWartosc: 0,
-    znacznikiDuetuWartosc: 0,
+    gracze: [
+      {
+        ptakiWartosc: null,
+        kartyBonusoweWartosc: null,
+        celeWartosc: null,
+        jajkaWartosc: null,
+        pozywienieNaKartachWartosc: null,
+        kartaPodKartaWartosc: null,
+        znacznikiDuetuWartosc: null,
+        suma: 0, // Initialize suma property to 0
+      },
+    ],
+    suma: 0,
   };
 
-  handleChange = (e) => {
+  handleChange = (e, index) => {
     const name = e.target.name;
     const type = e.target.type;
+    const value =
+      type === "checkbox" ? e.target.checked : parseFloat(e.target.value); // Parse value to a float
 
-    if (type === "number") {
-      const value = e.target.value;
-      this.setState({
+    this.setState((prevState) => {
+      const updatedGracze = [...prevState.gracze];
+      updatedGracze[index] = {
+        ...updatedGracze[index],
         [name]: value,
-      });
-    } else if (type === "checkbox") {
-      const checked = e.target.checked;
-      this.setState({
-        [name]: checked,
-      });
-    }
+      };
+      return { gracze: updatedGracze };
+    });
   };
 
-  handleSubmmit = (e) => {
+  handleSubmmit = (e, index) => {
     e.preventDefault();
-    const wynik =
-      parseFloat(this.state.ptakiWartosc) +
-      parseFloat(this.state.kartyBonusoweWartosc) +
-      parseFloat(this.state.celeWartosc) +
-      parseFloat(this.state.jajkaWartosc) +
-      parseFloat(this.state.pozywienieNaKartachWartosc) +
-      parseFloat(this.state.kartaPodKartaWartosc) +
-      parseFloat(this.state.znacznikiDuetuWartosc);
+    const { gracze } = this.state;
 
-    this.setState({
-      suma: wynik,
+    const wynik =
+      parseFloat(gracze[index].ptakiWartosc || 0) +
+      parseFloat(gracze[index].kartyBonusoweWartosc || 0) +
+      parseFloat(gracze[index].celeWartosc || 0) +
+      parseFloat(gracze[index].jajkaWartosc || 0) +
+      parseFloat(gracze[index].pozywienieNaKartachWartosc || 0) +
+      parseFloat(gracze[index].kartaPodKartaWartosc || 0) +
+      parseFloat(gracze[index].znacznikiDuetuWartosc || 0);
+
+    this.setState((prevState) => {
+      const updatedGracze = [...prevState.gracze];
+      updatedGracze[index].suma = wynik;
+      return { gracze: updatedGracze };
     });
-    document.getElementById("sumResult").textContent = `Suma: ${wynik}`;
-    console.log(wynik);
   };
 
   handleClick = (e) => {
     const button = e.target;
-    const div = document.querySelector(".Kalkulator__conteiner");
+    const { gracze } = this.state;
+    // const div = document.querySelector(".Kalkulator__conteiner");
     if (button.className === "removePlayer") {
-      div.style.display = "none";
+      // Usuwanie gracza
+      const index = gracze.length - 1; // Usuwamy ostatniego gracza
+      if (index >= 0) {
+        gracze.splice(index, 1);
+        this.setState({ gracze });
+      }
     } else if (button.className === "addPlayer") {
-      div.style.display = "block";
+      // Dodawanie gracza
+      this.setState((prevState) => ({
+        gracze: [...prevState.gracze, {}],
+      }));
     }
   };
 
   render() {
+    const { gracze } = this.state;
+
     return (
       <div className="Elements__conteiner">
         <div className="opis">
@@ -77,134 +95,178 @@ export default class Kalkulator extends Component {
           {" "}
           Ukryj{" "}
         </button>
-        <div className="Kalkulator__conteiner">
-          <Container fluid>
-            <form onSubmit={this.handleSubmmit}>
-              <Row className="row__one">
-                <Col>
-                  <label htmlFor="ptaki">
-                    Ptaki:
-                    <br />
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="ptaki"
-                      name="ptakiWartosc"
-                      value={this.state.ptakiWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col>
-                  <label htmlFor="kartyBonusowe">
-                    Karty Bonusowe:
-                    <br />
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="kartyBonusowe"
-                      name="kartyBonusoweWartosc"
-                      value={this.state.kartyBonusoweWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label htmlFor="cele">
-                    Cele
-                    <br />{" "}
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="cele"
-                      name="celeWartosc"
-                      value={this.state.celeWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label htmlFor="jajka">
-                    Jajka
-                    <br />{" "}
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="jajka"
-                      name="jajkaWartosc"
-                      value={this.state.jajkaWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label htmlFor="pozywienieNaKartach">
-                    Pożywienie Na Kartach
-                    <br />{" "}
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="pozywienieNaKartach"
-                      name="pozywienieNaKartachWartosc"
-                      value={this.state.pozywienieNaKartachWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label htmlFor="kartaPodKarta">
-                    Karta Pod Karta
-                    <br />{" "}
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="kartaPodKarta"
-                      name="kartaPodKartaWartosc"
-                      value={this.state.kartaPodKartaWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label htmlFor="znacznikiDuetu">
-                    Znaczniki Duetu
-                    <br />{" "}
-                    <input
-                      className="textbox"
-                      type="number"
-                      id="znacznikiDuetu"
-                      name="znacznikiDuetuWartosc"
-                      value={this.state.znacznikiDuetuWartosc}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                </Col>
-                <Col></Col>
-              </Row>{" "}
-              <br />
-              <button className="myButton" onClick={this.handleClick}>
-                Oblicz kto wygrał
-              </button>
-            </form>
-          </Container>
-          <Container>
-            <div id="sumResult"></div>
-          </Container>
-        </div>
+        {gracze.map((gracz, index) => (
+          <div className="Kalkulator__conteiner" key={index}>
+            <Container fluid>
+              <form onSubmit={(e) => this.handleSubmmit(e)}>
+                <Row className="row__one">
+                  <Col>
+                    <label htmlFor={`ptaki-${index}`}>
+                      Ptaki:
+                      <br />
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`ptaki-${index}`}
+                        name={`ptakiWartosc-${index}`}
+                        value={
+                          gracz.ptakiWartosc === null ? "" : gracz.ptakiWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col>
+                    <label htmlFor={`kartyBonusowe-${index}`}>
+                      Karty Bonusowe:
+                      <br />
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`kartyBonusowe-${index}`}
+                        name={`kartyBonusoweWartosc-${index}`}
+                        value={
+                          gracz.kartyBonusoweWartosc === null
+                            ? ""
+                            : gracz.kartyBonusoweWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor={`cele-${index}`}>
+                      Cele
+                      <br />{" "}
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`cele-${index}`}
+                        name={`celeWartosc-${index}`}
+                        value={
+                          gracz.celeWartosc === null ? "" : gracz.celeWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col></Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor={`jajka-${index}`}>
+                      Jajka
+                      <br />{" "}
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`jajka-${index}`}
+                        name={`jajkaWartosc-${index}`}
+                        value={
+                          gracz.jajkaWartosc === null ? "" : gracz.jajkaWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col></Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor={`pozywienieNaKartach-${index}`}>
+                      Pożywienie Na Kartach
+                      <br />{" "}
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`pozywienieNaKartach-${index}`}
+                        name={`pozywienieNaKartachWartosc-${index}`}
+                        value={
+                          gracz.pozywienieNaKartachWartosc === null
+                            ? ""
+                            : gracz.pozywienieNaKartachWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col></Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor={`kartaPodKarta-${index}`}>
+                      Karta Pod Karta
+                      <br />{" "}
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`kartaPodKarta-${index}`}
+                        name={`kartaPodKartaWartosc-${index}`}
+                        value={
+                          gracz.kartaPodKartaWartosc === null
+                            ? ""
+                            : gracz.kartaPodKartaWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col></Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor={`znacznikiDuetu-${index}`}>
+                      Znaczniki Duetu
+                      <br />{" "}
+                      <input
+                        className="textbox"
+                        type="number"
+                        id={`znacznikiDuetu-${index}`}
+                        name={`znacznikiDuetuWartosc-${index}`}
+                        value={
+                          gracz.znacznikiDuetuWartosc === null
+                            ? ""
+                            : gracz.znacznikiDuetuWartosc
+                        }
+                        onChange={(e) => this.handleChange(e, index)}
+                      />
+                    </label>
+                  </Col>
+                  <Col></Col>
+                </Row>{" "}
+                <Row>
+                  <Col>
+                    <label htmlFor={`suma-${index}`}>
+                      Suma punktów:
+                      <br />
+                      <div id={`suma-${index}`}>{gracz.suma || 0}</div>
+                    </label>
+                  </Col>
+                  <Col>
+                    <button
+                      className="myButton"
+                      onClick={(e) => this.handleSubmmit(e, index)}
+                    >
+                      Oblicz wynik gracza
+                    </button>
+                  </Col>
+                </Row>
+                <br />
+                <button
+                  className="myButton"
+                  onClick={(e) => this.handleSubmmit(e, index)}
+                >
+                  Oblicz kto wygrał
+                </button>
+              </form>
+            </Container>
+            <Container>
+              <div id="sumResult"></div>
+            </Container>
+          </div>
+        ))}
       </div>
     );
   }
