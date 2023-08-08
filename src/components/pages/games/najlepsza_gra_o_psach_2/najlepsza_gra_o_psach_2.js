@@ -127,8 +127,7 @@ function App() {
             <Form.Control
               as="select"
               value={numPlayers}
-              onChange={handleNumPlayersChange}
-            >
+              onChange={handleNumPlayersChange}            >
               <option value="0">Wybierz...</option>
               <option value="1">1 gracz</option>
               <option value="2">2 graczy</option>
