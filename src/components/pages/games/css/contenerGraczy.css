@@ -1,0 +1,15 @@
+.contenerGraczy {
+  background-color: rgb(91, 92, 92);
+  margin-bottom: 50px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.btnSuma{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btnResetuj{
+  margin-left: 5px;
+  margin-right: 5px;
+}

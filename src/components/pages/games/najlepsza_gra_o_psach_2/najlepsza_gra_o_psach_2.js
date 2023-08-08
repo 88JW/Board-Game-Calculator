@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./najlepsza_gra_o_psach_2.css"
+import ".././css/contenerGraczy.css";
 
-function NumberForm({ formCount, onDelete, playerName, onNameChange }) {
+
+
+
+function NumberForm({ formCount, playerName }) {
   const [number1, setNumber1] = useState("");
   const [number2, setNumber2] = useState("");
   const [number3, setNumber3] = useState("");
@@ -37,80 +43,56 @@ function NumberForm({ formCount, onDelete, playerName, onNameChange }) {
     setSum("");
   };
 
-  const handleDeleteClick = () => {
-    onDelete();
-  };
-
-  const handleNameChange = (event) => {
-    onNameChange(event.target.value);
-  };
-
   return (
-    <Container>
-      <Form.Group controlId="formPlayerName">
-        <Form.Label>Wprowadź nazwę gracza:</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Wprowadź nazwę"
-          value={playerName}
-          onChange={handleNameChange}
-        />
-      </Form.Group>
-
+    <Container className="contenerGraczy">
       <h1>{playerName ? playerName : `Player ${formCount}`} </h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formNumber1">
-          <Form.Label>Psy:</Form.Label>
+          <Form.Label>
+            {" "}
+            Suma Nakarmionych Psów:<br></br>
+          </Form.Label>
           <Form.Control
             type="number"
-            placeholder="Wprowadź liczbę"
+            placeholder="Wprowadź punkty"
             value={number1}
             onChange={handleChange1}
           />
         </Form.Group>
         <Form.Group controlId="formNumber2">
-          <Form.Label>Zabawki:</Form.Label>
+          <Form.Label>
+            Zabawki:<br></br>
+          </Form.Label>
           <Form.Control
             type="number"
-            placeholder="Wprowadź liczbę"
+            placeholder="Wprowadź punkty"
             value={number2}
             onChange={handleChange2}
           />
         </Form.Group>
         <Form.Group controlId="formNumber2">
-          <Form.Label>Kości:</Form.Label>
+          <Form.Label>
+            Kości:<br></br>
+          </Form.Label>
           <Form.Control
             type="number"
-            placeholder="Wprowadź liczbę"
+            placeholder="Wprowadź punkty"
             value={number3}
             onChange={handleChange3}
           />
         </Form.Group>
-        {/* <Button variant="primary" type="submit">
-          Wyślij
-        </Button> */}
       </Form>
       <p>Suma wprowadzonych liczb: {sum}</p>
-      <Button variant="primary" onClick={handleButtonClick}>
+      <Button className="btnSuma" variant="primary" onClick={handleButtonClick}>
         Oblicz sumę
       </Button>
-      <Button variant="danger" onClick={handleResetClick}>
+      <Button
+        className="btnResetuj"
+        variant="danger"
+        onClick={handleResetClick}
+      >
         Resetuj
       </Button>
-      {formCount > 1 && (
-        <Button variant="danger" onClick={handleDeleteClick}>
-          Usuń formularz
-        </Button>
-      )}
-      {/* <Form.Group controlId="formPlayerName">
-        <Form.Label>Wprowadź nazwę gracza:</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Wprowadź nazwę"
-          value={playerName}
-          onChange={handleNameChange}
-        />
-      </Form.Group> */}
     </Container>
   );
 }
@@ -121,12 +103,13 @@ function App() {
   const [playerNames, setPlayerNames] = useState([]);
 
   const handleNumPlayersChange = (event) => {
-    setNumPlayers(parseInt(event.target.value));
+    const numPlayers = parseInt(event.target.value);
+    setNumPlayers(numPlayers);
+    setPlayerNames([...Array(numPlayers)].map(() => ""));
   };
 
   const handleStartClick = () => {
     setShowForms(true);
-    setPlayerNames([...Array(numPlayers)].map(() => ""));
   };
 
   const handleNameChange = (index, name) => {
@@ -153,6 +136,19 @@ function App() {
               <option value="4">4 graczy</option>
             </Form.Control>
           </Form.Group>
+          {[...Array(numPlayers)].map((_, index) => (
+            <Form.Group controlId="formPlayerName" key={index}>
+              <Form.Label>Wprowadź nazwę gracza {index + 1}:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Wprowadź nazwę"
+                value={playerNames[index]}
+                onChange={(event) =>
+                  handleNameChange(index, event.target.value)
+                }
+              />
+            </Form.Group>
+          ))}
           <Button
             variant="primary"
             type="button"
@@ -167,13 +163,13 @@ function App() {
       {showForms && (
         <>
           {[...Array(numPlayers)].map((_, index) => (
-            <NumberForm
-              key={index}
-              formCount={index + 1}
-              onDelete={() => setNumPlayers(numPlayers - 1)}
-              playerName={playerNames[index]}
-              onNameChange={(name) => handleNameChange(index, name)}
-            />
+            <div key={index}>
+              <NumberForm
+                formCount={index + 1}
+                onDelete={() => setNumPlayers(numPlayers - 1)}
+                playerName={playerNames[index]}
+              />
+            </div>
           ))}
         </>
       )}
