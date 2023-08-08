@@ -1,26 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import Everdell from "./games/everdell/everdell";
 import NajlepszaGraOPpsach2 from "./games/najlepsza_gra_o_psach_2/najlepsza_gra_o_psach_2";
 import NaSkrzydlach from "./games/na_skrzydlach/na_skrzydlach";
 
-export default function NaviGames() {
+
+function NaviGames() {
+  const [menuVisible, setMenuVisible] = useState(true); // dodajemy stan menuVisible
+
+  const handleMenuClick = () => {
+    setMenuVisible(false); // zmieniamy stan na false po kliknięciu w element menu
+  };
+  
+
+
   return (
     <div>
+       {menuVisible && (
       <div className="Navstyle">
         <Navbar expand="md" variant="dark">
           <Container>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
-                <Nav.Link as={Link} to="everdell">
+                <Nav.Link as={Link} to="everdell" onClick={handleMenuClick}>
                   Everdell
                 </Nav.Link>
-                <Nav.Link as={Link} to="najlepsza_gra_o_psach_2">
+                <Nav.Link as={Link} to="najlepsza_gra_o_psach_2" onClick={handleMenuClick}>
                   Najlepsza gra o psach 2
                 </Nav.Link>
-                <Nav.Link as={Link} to="na_skrzydlach">
+                <Nav.Link as={Link} to="na_skrzydlach" onClick={handleMenuClick}>
                   Na skrzydłach
                 </Nav.Link>
               </Nav>
@@ -28,6 +38,7 @@ export default function NaviGames() {
           </Container>
         </Navbar>
       </div>
+      )}
       <div>
         <Routes>
           <Route path="/everdell" element={<Everdell />} />
@@ -41,3 +52,5 @@ export default function NaviGames() {
     </div>
   );
 }
+
+export default NaviGames;
