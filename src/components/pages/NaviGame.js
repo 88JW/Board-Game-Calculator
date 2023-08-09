@@ -63,5 +63,4 @@ function NaviGames() {
     </div>
   );
 }
-
 export default NaviGames;
