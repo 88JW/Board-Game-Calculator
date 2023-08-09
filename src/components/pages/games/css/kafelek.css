@@ -1,0 +1,8 @@
+.kafelek{
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 10px;
+  min-width: 100px; 
+  min-height: 100px;
+  margin: 5px;
+}

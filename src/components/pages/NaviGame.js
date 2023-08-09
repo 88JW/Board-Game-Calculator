@@ -1,45 +1,56 @@
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import { Navbar, Container, Nav } from "react-bootstrap";
-import Everdell from "./games/everdell/everdell";
+import { Container, Row, Col } from "react-bootstrap";
+import "../pages/games/css/kafelek.css";
+
+// importujemy obrazki
+import everdell from "./games/everdell/everdell.png";
+import naSkrzydlach from "./games/na_skrzydlach/wingspan.png";
+import Najlepsza from "./games/najlepsza_gra_o_psach_2/najlesza.png";
+
+// importujemy komponenty 
 import NajlepszaGraOPpsach2 from "./games/najlepsza_gra_o_psach_2/najlepsza_gra_o_psach_2";
 import NaSkrzydlach from "./games/na_skrzydlach/na_skrzydlach";
-
-
+import Everdell from "./games/everdell/everdell";
 function NaviGames() {
   const [menuVisible, setMenuVisible] = useState(true); // dodajemy stan menuVisible
 
   const handleMenuClick = () => {
     setMenuVisible(false); // zmieniamy stan na false po kliknięciu w element menu
   };
-  
-
 
   return (
     <div>
-       {menuVisible && (
-      <div className="Navstyle">
-        <Navbar expand="md" variant="dark">
-          <Container>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link as={Link} to="everdell" onClick={handleMenuClick}>
-                  Everdell
-                </Nav.Link>
-                <Nav.Link as={Link} to="najlepsza_gra_o_psach_2" onClick={handleMenuClick}>
-                  Najlepsza gra o psach 2
-                </Nav.Link>
-                <Nav.Link as={Link} to="na_skrzydlach" onClick={handleMenuClick}>
-                  Na skrzydłach
-                </Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      </div>
+      {/* // dodajemy elementy menu */}
+      {menuVisible && (
+        <Container>
+          <Row>
+            <Col xs={6}>
+              <div className="tile">
+                <Link to="everdell" onClick={handleMenuClick}>
+                  <img src={everdell} className="kafelek" xs={6}></img>
+                </Link>
+              </div>
+            </Col>
+            <Col xs={6}>
+              <div className="tile">
+                <Link to="najlepsza_gra_o_psach_2" onClick={handleMenuClick}>
+                  <img src={Najlepsza} className="kafelek"></img>
+                </Link>
+              </div>
+            </Col>
+            <Col xs={6}>
+              <div className="tile">
+                <Link to="na_skrzydlach" onClick={handleMenuClick}>
+                  <img src={naSkrzydlach} className="kafelek"></img>
+                </Link>
+              </div>
+            </Col>
+          </Row>
+        </Container>
       )}
       <div>
+        {/* // dodajemy ścieżki do komponentów */}
         <Routes>
           <Route path="/everdell" element={<Everdell />} />
           <Route

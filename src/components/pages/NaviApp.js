@@ -3,6 +3,7 @@ import Home from "./Home";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Route, Routes, Link } from "react-router-dom";
 
+
 import NaviGame from "./NaviGame";
 
 function NaviApp() {
